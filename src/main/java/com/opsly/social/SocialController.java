@@ -8,7 +8,7 @@ import java.util.*;
 @RestController
 public class SocialController {
 
-    @GetMapping("/social")
+    @GetMapping("/")
     public Social getSocial() {
 
         return new Social(5, 8, 3);
