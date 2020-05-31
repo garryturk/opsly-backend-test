@@ -1,25 +1,25 @@
 package com.opsly.social;
 
 public class Social{
-    private int twitter;
-    private int facebook;
-    private int instagram;;
+    private String twitter;
+    private String facebook;
+    private String instagram;;
 
-    public Social(int twit, int fb, int ig){
+    public Social(String twit, String fb, String ig){
         this.twitter = twit;
         this.facebook = fb;
         this.instagram = ig;
     }
 
-    public int getTwitter(){
+    public String getTwitter(){
         return this.twitter;
     }
 
-    public int getFacebook(){
+    public String getFacebook(){
         return this.facebook;
     }
 
-    public int getInstagram(){
+    public String getInstagram(){
         return this.instagram;
     }
 }

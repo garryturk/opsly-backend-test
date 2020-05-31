@@ -37,7 +37,7 @@ public class SocialController {
         try{
             uris.add(new URI("https://takehome.io/twitter"));
             uris.add(new URI("https://takehome.io/facebook"));
-            uris.add(new URI("https://takehome.io/facebook"));
+            uris.add(new URI("https://takehome.io/instagram"));
         } catch(URISyntaxException e){}
 
         // Make an list of requests
@@ -49,28 +49,30 @@ public class SocialController {
         // Record overall execution time and log to console
         long start = System.currentTimeMillis();
 
-        // For each URI create an async request and get the integer result
-        List<Integer> results = requests.stream().parallel()
+        // For each URI create an async request and get the array of posts
+        List<String> results = requests.stream().parallel()
             .map(request -> client.sendAsync(request, ofString())
                 .thenApply(res -> res.body()))
             .map(result -> {
-String str;
-try{
-str = result.get();
-}catch(Exception e) {str="";}
-return getRecordCount(str);
-}
-)
+                String str;
+                try{
+                    str = result.get();
+                }catch(Exception e) {str="";}
+                int count = getRecordCount(str);
+
+                if(count == -1){
+                // Error case, return empty array
+                    return "[]";
+                } else {
+                    return str;
+                }
+
+            })
             .collect(toList());
 
         long end = System.currentTimeMillis();
         System.out.println("Time: "+ (end-start));
 
-        // We don't special case or log the -1 error values, possible future enhancement
-        int twitter = results.get(0);
-        int facebook = results.get(1);
-        int instagram = results.get(2);
-
-        return new Social(twitter, facebook, instagram);
+        return new Social(results.get(0), results.get(1), results.get(2));
     }
 }
