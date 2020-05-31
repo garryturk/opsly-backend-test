@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.equalTo;
+import org.json.JSONArray;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -20,37 +21,37 @@ public class SocialControllerTests{
     private MockMvc mockMvc;
 
     @Test
-    public void emptyStringShouldReturnErrorCase(){
-        int res = SocialController.getRecordCount("");
-        assertEquals(res, -1);
+    public void emptyStringShouldReturnEmptyArray(){
+        JSONArray res = SocialController.getPosts("");
+        assertEquals(res.length(), 0);
     }
 
     @Test
-    public void nullStringShouldReturnErrorCase(){
-        int res = SocialController.getRecordCount(null);
-        assertEquals(res, -1);
+    public void nullStringShouldReturnEmptyArray(){
+        JSONArray res = SocialController.getPosts("");
+        assertEquals(res.length(), 0);
     }
 
     @Test
-    public void emptyObjectShouldReturnErrorCase(){
-        int res = SocialController.getRecordCount("{}");
-        assertEquals(res, -1);
+    public void emptyObjectShouldReturnEmptyArray(){
+        JSONArray res = SocialController.getPosts("");
+        assertEquals(res.length(), 0);
     }
 
     @Test
-    public void emptyArrayShouldReturnZero(){
-        int res = SocialController.getRecordCount("[]");
-        assertEquals(res, 0);
+    public void emptyArrayShouldReturnEmptyArray(){
+        JSONArray res = SocialController.getPosts("");
+        assertEquals(res.length(), 0);
     }
 
     @Test
     public void validArraysShouldReturnCorrectValues(){
-        int res = SocialController.getRecordCount("[1]");
-        assertEquals(res, 1);
-        res = SocialController.getRecordCount("[1,2]");
-        assertEquals(res, 2);
-        res = SocialController.getRecordCount("[1,2,3]");
-        assertEquals(res, 3);
+        JSONArray res = SocialController.getPosts("[{k1:1}]");
+        assertEquals(res.length(), 1);
+        res = SocialController.getPosts("[{k1:1}, {k2:2}]");
+        assertEquals(res.length(), 2);
+        res = SocialController.getPosts("[{k1:1}, {k2:2}, {k3:3}]");
+        assertEquals(res.length(), 3);
     }
 
     @Test
